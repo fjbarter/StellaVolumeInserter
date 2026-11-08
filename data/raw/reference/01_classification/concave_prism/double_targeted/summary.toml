@@ -1,0 +1,17 @@
+boundary_band = 1.5631940186722205e-14
+boundary_points = 360
+case = "concave_prism"
+category = "targeted"
+clearance_violations = 0
+false_negative_rate = 0.0
+false_negatives = 0
+false_positive_rate = 0.0
+false_positives = 0
+ideal_false_negatives = 0
+ideal_false_positives = 0
+inside_points = 0
+intentional_clearance_rejections = 59
+outside_points = 85
+points = 504
+precision = "double"
+sampling_clearance = 0.035

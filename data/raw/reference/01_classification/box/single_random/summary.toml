@@ -1,0 +1,17 @@
+boundary_band = 4.577636718750001e-6
+boundary_points = 0
+case = "box"
+category = "random"
+clearance_violations = 0
+false_negative_rate = 0.0
+false_negatives = 0
+false_positive_rate = 0.0
+false_positives = 0
+ideal_false_negatives = 0
+ideal_false_positives = 0
+inside_points = 2342
+intentional_clearance_rejections = 524
+outside_points = 2134
+points = 5000
+precision = "single"
+sampling_clearance = 0.035

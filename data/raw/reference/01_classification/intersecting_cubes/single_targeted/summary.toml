@@ -1,0 +1,17 @@
+boundary_band = 8.010864257812501e-7
+boundary_points = 1109
+case = "intersecting_cubes"
+category = "targeted"
+clearance_violations = 0
+false_negative_rate = 0.0
+false_negatives = 0
+false_positive_rate = 0.0
+false_positives = 0
+ideal_false_negatives = 0
+ideal_false_positives = 0
+inside_points = 84
+intentional_clearance_rejections = 178
+outside_points = 645
+points = 2016
+precision = "single"
+sampling_clearance = 0.004

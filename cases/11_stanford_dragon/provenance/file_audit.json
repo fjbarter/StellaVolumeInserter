@@ -1,0 +1,69 @@
+{
+  "mesh": {
+    "file": "dragon2.stl",
+    "sha256": "fa680acba2c958c917fa6b2fe561c0ef56c969b4c05ed19872b49b6c7ec4e118",
+    "triangles": 100000,
+    "bounds_min": [
+      -28.186798095703125,
+      -7.635249614715576,
+      -19.87980079650879
+    ],
+    "bounds_max": [
+      28.186798095703125,
+      17.575149536132812,
+      19.87980079650879
+    ],
+    "signed_surface_volume": 9967.791784635354,
+    "length_units": "STL header says MM; benchmark uses raw mesh-coordinate units"
+  },
+  "saved_particle_file": {
+    "file": "particles_vtk/particles_0.vtp",
+    "sha256": "14af2e1f02ca744cf0d13573c4c7e506360adbe672189f40ecc6700fcd2f9b2a",
+    "count": 1705517,
+    "radius_bins": [
+      {
+        "radius": 0.0629969984292984,
+        "count": 170415
+      },
+      {
+        "radius": 0.06899099797010422,
+        "count": 170725
+      },
+      {
+        "radius": 0.07498499751091003,
+        "count": 170711
+      },
+      {
+        "radius": 0.08097899705171585,
+        "count": 170252
+      },
+      {
+        "radius": 0.08697299659252167,
+        "count": 170723
+      },
+      {
+        "radius": 0.09296700358390808,
+        "count": 170146
+      },
+      {
+        "radius": 0.0989610031247139,
+        "count": 170327
+      },
+      {
+        "radius": 0.10495500266551971,
+        "count": 171122
+      },
+      {
+        "radius": 0.11094900220632553,
+        "count": 170920
+      },
+      {
+        "radius": 0.11694300174713135,
+        "count": 170176
+      }
+    ],
+    "sphere_volume": 5774.610607639459,
+    "fraction_using_signed_mesh_volume": 0.5793269695441083,
+    "timed_run_association": "not recorded; existing output predates reported 73-second comparison"
+  }
+}

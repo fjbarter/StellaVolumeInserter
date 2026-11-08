@@ -1,0 +1,17 @@
+boundary_band = 1.5631940186722205e-14
+boundary_points = 0
+case = "concave_prism"
+category = "random"
+clearance_violations = 0
+false_negative_rate = 0.0
+false_negatives = 0
+false_positive_rate = 0.0
+false_positives = 0
+ideal_false_negatives = 0
+ideal_false_positives = 0
+inside_points = 2156
+intentional_clearance_rejections = 437
+outside_points = 2407
+points = 5000
+precision = "double"
+sampling_clearance = 0.035

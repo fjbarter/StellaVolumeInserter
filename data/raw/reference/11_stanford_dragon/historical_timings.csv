@@ -1,0 +1,6 @@
+configuration,seconds,arithmetic,measurement_origin
+cpu_1,2941,Float64,experimenter-reported historical measurement
+cpu_2,1634,Float64,experimenter-reported historical measurement
+cpu_4,915,Float64,experimenter-reported historical measurement
+cpu_8,522,Float64,experimenter-reported historical measurement
+metal,73,Float32,experimenter-reported historical measurement

@@ -1,0 +1,150 @@
+{
+  "mesh": {
+    "file": "dragon2.stl",
+    "sha256": "fa680acba2c958c917fa6b2fe561c0ef56c969b4c05ed19872b49b6c7ec4e118",
+    "triangles": 100000,
+    "bounds_min": [
+      -28.186798095703125,
+      -7.635249614715576,
+      -19.87980079650879
+    ],
+    "bounds_max": [
+      28.186798095703125,
+      17.575149536132812,
+      19.87980079650879
+    ],
+    "signed_surface_volume": 9967.791784635354,
+    "length_units": "STL header says MM; benchmark uses raw mesh-coordinate units"
+  },
+  "saved_particle_file": {
+    "file": "particles_vtk/particles_0.vtp",
+    "sha256": "14af2e1f02ca744cf0d13573c4c7e506360adbe672189f40ecc6700fcd2f9b2a",
+    "count": 1705517,
+    "radius_bins": [
+      {
+        "radius": 0.0629969984292984,
+        "count": 170415
+      },
+      {
+        "radius": 0.06899099797010422,
+        "count": 170725
+      },
+      {
+        "radius": 0.07498499751091003,
+        "count": 170711
+      },
+      {
+        "radius": 0.08097899705171585,
+        "count": 170252
+      },
+      {
+        "radius": 0.08697299659252167,
+        "count": 170723
+      },
+      {
+        "radius": 0.09296700358390808,
+        "count": 170146
+      },
+      {
+        "radius": 0.0989610031247139,
+        "count": 170327
+      },
+      {
+        "radius": 0.10495500266551971,
+        "count": 171122
+      },
+      {
+        "radius": 0.11094900220632553,
+        "count": 170920
+      },
+      {
+        "radius": 0.11694300174713135,
+        "count": 170176
+      }
+    ],
+    "sphere_volume": 5774.610607639459,
+    "fraction_using_signed_mesh_volume": 0.5793269695441083,
+    "timed_run_association": "not recorded; existing output predates reported 73-second comparison"
+  },
+  "audit_date": "2026-11-07",
+  "hardware_inspected_on_audit_date": {
+    "model": "MacBook Pro",
+    "model_identifier": "Mac17,9",
+    "chip": "Apple M5 Pro",
+    "cpu_cores": 18,
+    "cpu_core_description": "proc 18:6:0:12",
+    "gpu_cores": 20,
+    "unified_memory_bytes": 51539607552,
+    "os": "macOS 26.6.2 (25G83)",
+    "kernel": "Darwin 25.6.0"
+  },
+  "saved_manifest": {
+    "julia_version": "1.12.5",
+    "sha256": "a48f349315815048cc18bb9a40daf35af9f1d5b264a064d54d3cbb227d756bc7",
+    "packages": {
+      "Stella": {
+        "path": "../../..",
+        "version": "0.1.0"
+      },
+      "Metal": {
+        "git-tree-sha1": "f6230e33182533b6411c1d82ff894e9b36eaf320",
+        "version": "1.11.1"
+      },
+      "AcceleratedKernels": {
+        "git-tree-sha1": "f75592c5dc92f7f75e544b156eba7165d4418193",
+        "version": "0.4.4"
+      },
+      "ImplicitBVH": {
+        "git-tree-sha1": "ec7c283ee0a970cb16d07661558a12555b9e7983",
+        "version": "0.7.1"
+      },
+      "KernelAbstractions": {
+        "git-tree-sha1": "e51d16f9dcff134c4ecf79e7cfa764c59d2d648e",
+        "version": "0.9.45"
+      },
+      "Distributions": {
+        "git-tree-sha1": "478d3450b1cc56521d1d99ad923acf43f8813c6d",
+        "version": "0.25.134"
+      }
+    },
+    "timed_run_association": "not established"
+  },
+  "current_checkout": {
+    "revision": "6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a",
+    "script_sha256": "088c2eede122153e303e6e2fffbda85e0cb8625846c09a16b5ec58b6d2bf1133",
+    "timed_run_association": "not established; script currently uses Metal sampling and CPU Float64 relaxation"
+  },
+  "reported_benchmark": {
+    "source": "user-reported timings and configuration confirmation",
+    "particle_count": 1705517,
+    "nominal_packing_target": 0.581,
+    "relative_tolerance": 0.01,
+    "purging": false,
+    "cpu_seconds": {
+      "1": 2941,
+      "2": 1634,
+      "4": 915,
+      "8": 522
+    },
+    "gpu_seconds": 73,
+    "gpu_sampling": "Metal",
+    "gpu_relaxation": "Metal",
+    "unrecorded": [
+      "original log",
+      "iterations",
+      "runtime Julia version",
+      "exact run revision"
+    ],
+    "cpu_baseline_cores": 1,
+    "reported_packing_fraction": 0.581,
+    "timing_boundary": "inserter printed elapsed time",
+    "compilation_warmed_up": true,
+    "gpu_synchronised": true,
+    "cpu_sampling_precision": "Float64",
+    "cpu_relaxation_precision": "Float64",
+    "gpu_sampling_precision": "Float32",
+    "gpu_relaxation_precision": "Float32",
+    "convergence": "confirmed by experimenter; no rerun requested",
+    "mesh_provenance": "original Thingiverse mesh, unaltered; confirmed by experimenter"
+  }
+}

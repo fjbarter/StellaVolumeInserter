@@ -1,0 +1,17 @@
+boundary_band = 8.526512829121203e-15
+boundary_points = 358
+case = "box"
+category = "targeted"
+clearance_violations = 0
+false_negative_rate = 0.0
+false_negatives = 0
+false_positive_rate = 0.0
+false_positives = 0
+ideal_false_negatives = 0
+ideal_false_positives = 0
+inside_points = 0
+intentional_clearance_rejections = 61
+outside_points = 85
+points = 504
+precision = "double"
+sampling_clearance = 0.035

@@ -19,5 +19,3 @@ function write_table(path, rows)
         end
     end
 end
-
-

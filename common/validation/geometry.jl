@@ -112,5 +112,3 @@ function pair_penetrations(positions, radii)
     end
     return penetration
 end
-
-

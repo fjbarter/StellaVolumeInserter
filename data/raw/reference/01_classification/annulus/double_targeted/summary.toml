@@ -1,0 +1,17 @@
+boundary_band = 7.105427357601002e-16
+boundary_points = 176
+case = "annulus"
+category = "targeted"
+clearance_violations = 0
+false_negative_rate = 0.0
+false_negatives = 0
+false_positive_rate = 0.0
+false_positives = 0
+ideal_false_negatives = 0
+ideal_false_positives = 0
+inside_points = 0
+intentional_clearance_rejections = 422
+outside_points = 410
+points = 1008
+precision = "double"
+sampling_clearance = 0.0001

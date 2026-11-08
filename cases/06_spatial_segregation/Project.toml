@@ -1,0 +1,23 @@
+[deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Packing3D = "5d0ed53d-9f2b-4cc0-9997-af7e4729d96d"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+Stella = "073efac9-f964-4eed-a055-be554ec1e612"
+StellaGmsh = "d075ac83-78d4-45fb-ba34-599d2b1f585f"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+WriteVTK = "64499a7a-5c06-52f2-abe2-ccb03c286192"
+
+[sources]
+Packing3D = {rev = "d437dff33a3019bb28eda2796feae533a02123b7", url = "https://github.com/fjbarter/Packing3D.jl"}
+# BEGIN TEMPORARY STELLA SOURCE — replace this block after public release.
+Stella = {path = "../../Stella"}
+# Future GitHub source (requires authorised access until public):
+# Stella = {url = "https://github.com/stellaorg/stella.jl", rev = "6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a"}
+# END TEMPORARY STELLA SOURCE
+
+[compat]
+julia = "1.11"

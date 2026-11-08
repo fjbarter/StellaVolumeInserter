@@ -12,5 +12,3 @@ function cylinder_mesh(; radius=1.0, height=1.0, origin=(0.0, 0.0, 0.0), size_ma
         G.mesh(size_max=size_max)
     end |> TriangleMesh
 end
-
-

@@ -1,0 +1,17 @@
+boundary_band = 8.392333984375e-6
+boundary_points = 377
+case = "cylinder"
+category = "targeted"
+clearance_violations = 0
+false_negative_rate = 0.0
+false_negatives = 0
+false_positive_rate = 0.0
+false_positives = 0
+ideal_false_negatives = 0
+ideal_false_positives = 0
+inside_points = 0
+intentional_clearance_rejections = 55
+outside_points = 72
+points = 504
+precision = "single"
+sampling_clearance = 0.035
