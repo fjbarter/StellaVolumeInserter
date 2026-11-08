@@ -1,0 +1,4 @@
+[deps]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Metal = "dde4c033-4e86-420c-a63e-0dd931031962"
+Stella = "073efac9-f964-4eed-a055-be554ec1e612"

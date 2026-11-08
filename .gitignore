@@ -1,0 +1,44 @@
+# Local settings and editor files
+.DS_Store
+.AppleDouble
+._*
+.vscode/
+.idea/
+*.swp
+*~
+.env
+.env.*
+!.env.example
+LocalPreferences.toml
+# Julia coverage, scratch and caches (Manifest.toml is deliberately tracked)
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+deps/deps.jl
+scratch/
+tmp/
+__pycache__/
+# Generated output; reference tables and manifests remain tracked
+*.log
+*.vtk
+*.vtu
+*.vtp
+*.pvd
+*.vtm
+*.pvtp
+*.jld2
+*.h5
+*.hdf5
+figures/generated/
+data/raw/generated/
+data/processed/generated/
+data/assemblies/reference/**
+!data/assemblies/reference/README.md
+
+# Temporary user-provided Stella checkout; never publish framework source here.
+/Stella/
+
+# External asset pending redistribution review
+/meshes/dragon2.stl
+
+/.venv/

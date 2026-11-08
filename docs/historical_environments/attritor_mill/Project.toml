@@ -1,0 +1,9 @@
+[deps]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Metal = "dde4c033-4e86-420c-a63e-0dd931031962"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Stella = "073efac9-f964-4eed-a055-be554ec1e612"
+StellaGmsh = "d075ac83-78d4-45fb-ba34-599d2b1f585f"
+
+[sources]
+Stella = {path = "<historical local Stella checkout; provenance only>"}
