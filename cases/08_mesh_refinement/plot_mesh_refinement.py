@@ -31,8 +31,15 @@ def read_results(path, expected_seeds):
     """Aggregate matched repeats; failures remain in the denominator and plot annotations."""
     with path.open(newline="") as source:
         reader = csv.DictReader(source)
-        required = {"geometry", "triangles", "iterations", "status", "seed",
-                    "reported_converged", "relative_volume_error"}
+        required = {
+            "geometry",
+            "triangles",
+            "iterations",
+            "status",
+            "seed",
+            "reported_converged",
+            "relative_volume_error",
+        }
         missing = required.difference(reader.fieldnames or [])
         if missing:
             raise ValueError("CSV is missing columns: " + ", ".join(sorted(missing)))
@@ -57,8 +64,11 @@ def read_results(path, expected_seeds):
                     geometry, triangles, sorted(seeds), expected_seeds
                 )
             )
-        successful = [row for row in repeats if row["status"] == "passed"
-                      and row["reported_converged"].lower() == "true"]
+        successful = [
+            row
+            for row in repeats
+            if row["status"] == "passed" and row["reported_converged"].lower() == "true"
+        ]
         values = [int(row["iterations"]) for row in successful]
         if any(value <= 0 for value in values):
             raise ValueError("Missing or invalid iteration count in a successful run")
@@ -91,9 +101,18 @@ def read_results(path, expected_seeds):
 
 
 def write_summary(path, groups):
-    columns = ["geometry", "triangles", "attempted", "successful", "failed",
-               "mean_iterations", "sd_iterations", "successful_seeds", "failed_seeds",
-               "volume_error_percent"]
+    columns = [
+        "geometry",
+        "triangles",
+        "attempted",
+        "successful",
+        "failed",
+        "mean_iterations",
+        "sd_iterations",
+        "successful_seeds",
+        "failed_seeds",
+        "volume_error_percent",
+    ]
     with path.open("w", newline="") as output:
         writer = csv.DictWriter(output, fieldnames=columns)
         writer.writeheader()
@@ -116,21 +135,40 @@ def plot_iterations(ax, groups):
             all_values.extend(values)
             if record["failed"]:
                 label = "Failed runs (counts shown)" if not failure_label_added else None
-                ax.scatter(record["triangles"], 0, marker="x", color="#B2182B",
-                           label=label, clip_on=False, zorder=4)
-                ax.annotate("{}/{} failed".format(record["failed"], record["attempted"]),
-                            (record["triangles"], 0), xytext=(0, 8),
-                            textcoords="offset points", ha="center", color="#B2182B", fontsize=8)
+                ax.scatter(
+                    record["triangles"],
+                    0,
+                    marker="x",
+                    color="#B2182B",
+                    label=label,
+                    clip_on=False,
+                    zorder=4,
+                )
+                ax.annotate(
+                    "{}/{} failed".format(record["failed"], record["attempted"]),
+                    (record["triangles"], 0),
+                    xytext=(0, 8),
+                    textcoords="offset points",
+                    ha="center",
+                    color="#B2182B",
+                    fontsize=8,
+                )
                 failure_label_added = True
         ax.errorbar(
             [row["triangles"] for row in records],
             [row["mean_iterations"] for row in records],
             yerr=[row["sd_iterations"] for row in records],
             label=geometry.capitalize() + " (mean ± SD)",
-            color=COLOURS[geometry], marker=MARKERS[geometry], capsize=3, zorder=3,
+            color=COLOURS[geometry],
+            marker=MARKERS[geometry],
+            capsize=3,
+            zorder=3,
         )
-        all_values.extend(row["mean_iterations"] + row["sd_iterations"]
-                          for row in records if math.isfinite(row["sd_iterations"]))
+        all_values.extend(
+            row["mean_iterations"] + row["sd_iterations"]
+            for row in records
+            if math.isfinite(row["sd_iterations"])
+        )
     if not all_values:
         raise ValueError("No successful runs to plot; inspect the failure summary")
     ax.set_xscale("log")
@@ -139,8 +177,13 @@ def plot_iterations(ax, groups):
     ax.set_ylim(0, math.ceil(max(all_values) * 1.12 / 10) * 10)
     ax.yaxis.set_major_locator(MaxNLocator(integer=True, nbins=5))
     ax.legend(
-        frameon=True, fancybox=False, framealpha=1.0,
-        facecolor="white", edgecolor="0.3", loc="lower left", fontsize=9,
+        frameon=True,
+        fancybox=False,
+        framealpha=1.0,
+        facecolor="white",
+        edgecolor="0.3",
+        loc="lower left",
+        fontsize=9,
     )
     style_axes(ax)
 
@@ -181,32 +224,44 @@ def save_figure(fig, output, name, formats):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--csv", type=Path, default=HERE.parent.parent / "data/raw/reference/08_mesh_refinement/mesh_refinement.csv")
-    parser.add_argument("--output-dir", type=Path, default=HERE.parent.parent / "figures/generated/08_mesh_refinement")
-    parser.add_argument("--formats", nargs="+", choices=("png", "pdf", "svg"), default=["png", "pdf"])
+    parser.add_argument(
+        "--csv",
+        type=Path,
+        default=HERE.parent.parent / "data/raw/reference/08_mesh_refinement/mesh_refinement.csv",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=HERE.parent.parent / "figures/generated/08_mesh_refinement",
+    )
+    parser.add_argument(
+        "--formats", nargs="+", choices=("png", "pdf", "svg"), default=["png", "pdf"]
+    )
     parser.add_argument("--expected-seeds", nargs="+", type=int, default=[1, 2, 3, 4, 5])
     args = parser.parse_args()
     groups = read_results(args.csv, args.expected_seeds)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     write_summary(args.output_dir / "mesh_refinement_summary.csv", groups)
 
-    plt.rcParams.update({
-        "font.family": "sans-serif",
-        "font.sans-serif": ["Arial"],
-        "mathtext.fontset": "custom",
-        "mathtext.rm": "Arial",
-        "mathtext.it": "Arial:italic",
-        "mathtext.bf": "Arial:bold",
-        "font.size": 10,
-        "axes.labelsize": 10,
-        "legend.fontsize": 10,
-        "lines.linewidth": 1.3,
-        "lines.markersize": 4.5,
-        "axes.linewidth": 0.7,
-        "pdf.fonttype": 42,
-        "ps.fonttype": 42,
-        "svg.fonttype": "none",
-    })
+    plt.rcParams.update(
+        {
+            "font.family": "sans-serif",
+            "font.sans-serif": ["Arial"],
+            "mathtext.fontset": "custom",
+            "mathtext.rm": "Arial",
+            "mathtext.it": "Arial:italic",
+            "mathtext.bf": "Arial:bold",
+            "font.size": 10,
+            "axes.labelsize": 10,
+            "legend.fontsize": 10,
+            "lines.linewidth": 1.3,
+            "lines.markersize": 4.5,
+            "axes.linewidth": 0.7,
+            "pdf.fonttype": 42,
+            "ps.fonttype": 42,
+            "svg.fonttype": "none",
+        }
+    )
 
     # Combined lower row for the proposed four-panel figure, with mesh renders above.
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.8), layout="constrained")
@@ -217,8 +272,10 @@ def main():
     save_figure(fig, args.output_dir, "mesh_refinement_plots", args.formats)
 
     # Individual vector panels are convenient when arranging the complete figure.
-    for name, draw in (("refinement_iterations", plot_iterations),
-                       ("refinement_volume_error", plot_volume_error)):
+    for name, draw in (
+        ("refinement_iterations", plot_iterations),
+        ("refinement_volume_error", plot_volume_error),
+    ):
         fig, ax = plt.subplots(figsize=(3.4, 2.8), layout="constrained")
         draw(ax, groups)
         save_figure(fig, args.output_dir, name, args.formats)

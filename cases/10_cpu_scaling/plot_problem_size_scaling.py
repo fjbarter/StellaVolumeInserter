@@ -8,15 +8,39 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent.parent / "figures"))
-from plotting import (plt, TEAL, RED, apply_style, read_csv, number, validated,
-                      style_axes, boxed_legend, save_figure)
+from plotting import (
+    plt,
+    TEAL,
+    RED,
+    apply_style,
+    read_csv,
+    number,
+    validated,
+    style_axes,
+    boxed_legend,
+    save_figure,
+)
 from matplotlib.ticker import MaxNLocator
 
 
 def read_results(path):
-    rows = read_csv(path, ["requested_count", "final_count", "insertion_seconds", "iterations",
-                           "status", "reported_converged", "julia_threads", "blas_threads",
-                           "compile_seconds", "recompile_seconds", "seconds_per_particle", "seed"])
+    rows = read_csv(
+        path,
+        [
+            "requested_count",
+            "final_count",
+            "insertion_seconds",
+            "iterations",
+            "status",
+            "reported_converged",
+            "julia_threads",
+            "blas_threads",
+            "compile_seconds",
+            "recompile_seconds",
+            "seconds_per_particle",
+            "seed",
+        ],
+    )
     rows.sort(key=lambda row: int(row["requested_count"]))
     for row in rows:
         if number(row, "compile_seconds") != 0 or number(row, "recompile_seconds") != 0:
@@ -47,12 +71,25 @@ def read_results(path):
 def plot_runtime(ax, rows):
     counts = [int(row["requested_count"]) for row in rows]
     times = [number(row, "insertion_seconds") for row in rows]
-    ax.errorbar(counts, times, yerr=[row["insertion_seconds_sd"] for row in rows],
-                fmt="o-", capsize=3, color=TEAL, label="Mean ± SD (n=5)")
+    ax.errorbar(
+        counts,
+        times,
+        yerr=[row["insertion_seconds_sd"] for row in rows],
+        fmt="o-",
+        capsize=3,
+        color=TEAL,
+        label="Mean ± SD (n=5)",
+    )
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.loglog(counts, [times[0] * n / counts[0] for n in counts], "--",
-              color="0.45", linewidth=1, label="Linear reference")
+    ax.loglog(
+        counts,
+        [times[0] * n / counts[0] for n in counts],
+        "--",
+        color="0.45",
+        linewidth=1,
+        label="Linear reference",
+    )
     ax.set_ylabel("Insertion time (s)")
     boxed_legend(ax, loc="upper left", fontsize=8)
     finish(ax)
@@ -61,19 +98,32 @@ def plot_runtime(ax, rows):
 def plot_time_per_particle(ax, rows):
     counts = [int(row["requested_count"]) for row in rows]
     costs = [1e6 * number(row, "insertion_seconds") / n for row, n in zip(rows, counts)]
-    ax.errorbar(counts, costs, yerr=[1e6 * row["seconds_per_particle_sd"] for row in rows],
-                fmt="o-", capsize=3, color=TEAL, label="Mean ± SD (n=5)")
+    ax.errorbar(
+        counts,
+        costs,
+        yerr=[1e6 * row["seconds_per_particle_sd"] for row in rows],
+        fmt="o-",
+        capsize=3,
+        color=TEAL,
+        label="Mean ± SD (n=5)",
+    )
     ax.set_xscale("log")
     boxed_legend(ax, fontsize=8)
     ax.set_ylabel("Insertion time per particle (µs)")
-    ax.set_ylim(0, max(c + 1e6*r["seconds_per_particle_sd"] for c, r in zip(costs, rows)) * 1.15)
+    ax.set_ylim(0, max(c + 1e6 * r["seconds_per_particle_sd"] for c, r in zip(costs, rows)) * 1.15)
     finish(ax)
 
 
 def plot_iterations(ax, rows):
-    ax.errorbar([int(row["requested_count"]) for row in rows],
-                [row["iterations"] for row in rows], yerr=[row["iterations_sd"] for row in rows],
-                fmt="s-", capsize=3, color=RED, label="Mean ± SD (n=5)")
+    ax.errorbar(
+        [int(row["requested_count"]) for row in rows],
+        [row["iterations"] for row in rows],
+        yerr=[row["iterations_sd"] for row in rows],
+        fmt="s-",
+        capsize=3,
+        color=RED,
+        label="Mean ± SD (n=5)",
+    )
     ax.set_xscale("log")
     boxed_legend(ax, fontsize=8)
     ax.set_ylabel("Relaxation iterations")
@@ -89,9 +139,17 @@ def finish(ax):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--csv", type=Path, default=HERE.parent.parent / "data/raw/reference/10_cpu_scaling/problem_size_scaling.csv")
-    parser.add_argument("--output-dir", type=Path, default=HERE.parent.parent / "figures/generated/10_cpu_scaling")
-    parser.add_argument("--formats", nargs="+", choices=("png", "pdf", "svg"), default=["png", "pdf"])
+    parser.add_argument(
+        "--csv",
+        type=Path,
+        default=HERE.parent.parent / "data/raw/reference/10_cpu_scaling/problem_size_scaling.csv",
+    )
+    parser.add_argument(
+        "--output-dir", type=Path, default=HERE.parent.parent / "figures/generated/10_cpu_scaling"
+    )
+    parser.add_argument(
+        "--formats", nargs="+", choices=("png", "pdf", "svg"), default=["png", "pdf"]
+    )
     args = parser.parse_args()
     rows = read_results(args.csv)
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -100,8 +158,11 @@ def main():
         writer.writeheader()
         writer.writerows(rows)
     apply_style()
-    panels = [("runtime", plot_runtime), ("time_per_particle", plot_time_per_particle),
-              ("iterations", plot_iterations)]
+    panels = [
+        ("runtime", plot_runtime),
+        ("time_per_particle", plot_time_per_particle),
+        ("iterations", plot_iterations),
+    ]
     fig, axes = plt.subplots(1, 3, figsize=(10.5, 2.9), layout="constrained")
     for label, ax, (_, draw) in zip(("(a)", "(b)", "(c)"), axes, panels):
         draw(ax, rows)

@@ -1,9 +1,11 @@
 """Shared publication style and CSV helpers for the paper's performance plots."""
+
 import csv
 import math
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -12,14 +14,25 @@ RED = "#B85C65"
 
 
 def apply_style():
-    plt.rcParams.update({
-        "font.family": "sans-serif", "font.sans-serif": ["Arial"],
-        "mathtext.fontset": "custom", "mathtext.rm": "Arial",
-        "mathtext.it": "Arial:italic", "mathtext.bf": "Arial:bold",
-        "font.size": 10, "axes.labelsize": 10, "legend.fontsize": 9,
-        "lines.linewidth": 1.3, "lines.markersize": 4.5, "axes.linewidth": 0.7,
-        "pdf.fonttype": 42, "ps.fonttype": 42, "svg.fonttype": "none",
-    })
+    plt.rcParams.update(
+        {
+            "font.family": "sans-serif",
+            "font.sans-serif": ["Arial"],
+            "mathtext.fontset": "custom",
+            "mathtext.rm": "Arial",
+            "mathtext.it": "Arial:italic",
+            "mathtext.bf": "Arial:bold",
+            "font.size": 10,
+            "axes.labelsize": 10,
+            "legend.fontsize": 9,
+            "lines.linewidth": 1.3,
+            "lines.markersize": 4.5,
+            "axes.linewidth": 0.7,
+            "pdf.fonttype": 42,
+            "ps.fonttype": 42,
+            "svg.fonttype": "none",
+        }
+    )
 
 
 def read_csv(path, required):
@@ -32,8 +45,11 @@ def read_csv(path, required):
     if not rows:
         raise ValueError("No experiment results found")
     for row in rows:
-        if (int(row["julia_threads"]) != 1 or int(row["blas_threads"]) != 1
-                or int(row.get("cpu_tasks", "1")) != 1):
+        if (
+            int(row["julia_threads"]) != 1
+            or int(row["blas_threads"]) != 1
+            or int(row.get("cpu_tasks", "1")) != 1
+        ):
             raise ValueError("These plots require single-threaded Julia and BLAS results")
     return rows
 
@@ -57,8 +73,9 @@ def style_axes(ax):
 
 
 def boxed_legend(ax, **kwargs):
-    return ax.legend(frameon=True, fancybox=False, framealpha=1,
-                     facecolor="white", edgecolor="0.3", **kwargs)
+    return ax.legend(
+        frameon=True, fancybox=False, framealpha=1, facecolor="white", edgecolor="0.3", **kwargs
+    )
 
 
 def save_figure(fig, directory, name, formats):

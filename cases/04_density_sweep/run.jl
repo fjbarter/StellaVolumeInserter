@@ -15,16 +15,34 @@ parallel = ParallelSettings(num_threads=1)
 relative_tolerance = 1e-3
 # Include the existing dense-box test exactly: N=1000, r=0.005, side=0.1.
 side = 0.1
-baseline_fraction = 1000 * (4pi/3 * 0.005^3) / side^3
+baseline_fraction = 1000 * (4pi / 3 * 0.005^3) / side^3
 packing_fractions = [
-    0.30, 0.35, 0.40, 0.45, 0.50, baseline_fraction,
-    0.55, 0.555, 0.56, 0.565, 0.57, 0.575, 0.58,
-    0.60, 0.62, 0.64, 0.68,
+    0.30,
+    0.35,
+    0.40,
+    0.45,
+    0.50,
+    baseline_fraction,
+    0.55,
+    0.555,
+    0.56,
+    0.565,
+    0.57,
+    0.575,
+    0.58,
+    0.60,
+    0.62,
+    0.64,
+    0.68,
 ]
 max_iterations = 2000
 mesh_size = 0.01
 bulk_bounds = [0.01, 0.09, 0.01, 0.09, 0.01, 0.09]
-output = get(ENV,"STELLA_OUTPUT",joinpath(@__DIR__,"..","..","data","raw","generated","04_density_sweep"))
+output = get(
+    ENV,
+    "STELLA_OUTPUT",
+    joinpath(@__DIR__, "..", "..", "data", "raw", "generated", "04_density_sweep"),
+)
 mkpath(output)
 
 box = G.with_gmsh(argv=["", "-v", "0"]) do
@@ -45,18 +63,24 @@ distributions = [
 for distribution in distributions
     Random.seed!(0)
     warm_radii = FractionalDistribution(distribution.fractions, distribution.radii)
-    mean_volume = sum(distribution.fractions .* (4pi/3 .* distribution.radii.^3))
+    mean_volume = sum(distribution.fractions .* (4pi / 3 .* distribution.radii .^ 3))
     warm_count = round(Int, baseline_fraction * side^3 / mean_volume)
     create_spheres_in_volume(
-        warm_count, mcc; include=box, properties=FractionalDistribution(radius=warm_radii),
-        precision=(sampling=:double, relaxation=:double), parallel=parallel,
-        relative_tolerance=relative_tolerance, force_fill=false, verbose=0,
+        warm_count,
+        mcc;
+        include=box,
+        properties=FractionalDistribution(radius=warm_radii),
+        precision=(sampling=:double, relaxation=:double),
+        parallel=parallel,
+        relative_tolerance=relative_tolerance,
+        force_fill=false,
+        verbose=0,
     )
 end
-rows = Dict{String, Any}[]
+rows = Dict{String,Any}[]
 
 for distribution in distributions, target_fraction in packing_fractions
-    mean_particle_volume = sum(distribution.fractions .* (4pi/3 .* distribution.radii.^3))
+    mean_particle_volume = sum(distribution.fractions .* (4pi / 3 .* distribution.radii .^ 3))
     num_particles = round(Int, target_fraction * side^3 / mean_particle_volume)
     radii = FractionalDistribution(distribution.fractions, distribution.radii)
     directory = joinpath(output, "$(distribution.name)_phi_$target_fraction")
@@ -66,27 +90,39 @@ for distribution in distributions, target_fraction in packing_fractions
     # Target fraction sets particle count using the whole box. Bulk density is measured
     # independently in the interior, excluding wall effects and counting partial spheres.
     result = run_insertion(
-        directory; requested_count=num_particles, volume=side^3,
+        directory;
+        requested_count=num_particles,
+        volume=side^3,
         clearance=p -> box_clearance(p, (side, side, side)),
-        relative_tolerance=relative_tolerance, seed=seed,
-        expected_radii=distribution.radii, expected_fractions=distribution.fractions,
-        settings=Dict{String, Any}(
-            "target_packing_fraction" => target_fraction, "psd" => distribution.name,
-            "max_iterations" => max_iterations, "backend" => "CPU Float64", "cpu_tasks" => 1,
-            "bulk_bounds" => bulk_bounds, "side_length" => side,
-            "dense_box_baseline" => distribution.name == "monodisperse" &&
-                num_particles == 1000,
+        relative_tolerance=relative_tolerance,
+        seed=seed,
+        expected_radii=distribution.radii,
+        expected_fractions=distribution.fractions,
+        settings=Dict{String,Any}(
+            "target_packing_fraction" => target_fraction,
+            "psd" => distribution.name,
+            "max_iterations" => max_iterations,
+            "backend" => "CPU Float64",
+            "cpu_tasks" => 1,
+            "bulk_bounds" => bulk_bounds,
+            "side_length" => side,
+            "dense_box_baseline" =>
+                distribution.name == "monodisperse" && num_particles == 1000,
         ),
-        additional_diagnostics=(positions, particle_radii) -> Dict{String, Any}(
+        additional_diagnostics=(positions, particle_radii) -> Dict{String,Any}(
             "bulk_packing_fraction" => Packing3D._compute_packing_cartesian(
-                x_data=collect(positions[1, :]), y_data=collect(positions[2, :]),
-                z_data=collect(positions[3, :]), radii=particle_radii,
-                boundaries=bulk_bounds, calculate_partial_volumes=true,
+                x_data=collect(positions[1, :]),
+                y_data=collect(positions[2, :]),
+                z_data=collect(positions[3, :]),
+                radii=particle_radii,
+                boundaries=bulk_bounds,
+                calculate_partial_volumes=true,
             ),
         ),
     ) do
         create_spheres_in_volume(
-            num_particles, mcc;
+            num_particles,
+            mcc;
             include=box,
             properties=FractionalDistribution(radius=radii),
             precision=(sampling=:double, relaxation=:double),

@@ -4,11 +4,11 @@ using StaticArrays
 # Independent reference: triangle distances and solid-angle winding in CPU Float64.
 # No Stella contact, BVH or ray-intersection routines are reused here.
 function mesh_reference(mesh)
-    vertices = [SVector{3, Float64}(v) for v in eachcol(mesh.vertices)]
-    triangles = [(vertices[a], vertices[b], vertices[c])
-                 for (a, b, c) in eachcol(mesh.connectivity)]
+    vertices = [SVector{3,Float64}(v) for v in eachcol(mesh.vertices)]
+    triangles =
+        [(vertices[a], vertices[b], vertices[c]) for (a, b, c) in eachcol(mesh.connectivity)]
     function clearance(point)
-        p = SVector{3, Float64}(point)
+        p = SVector{3,Float64}(point)
         minimum_distance2 = Inf
         solid_angle = 0.0
         for (a, b, c) in triangles
@@ -36,8 +36,11 @@ function mesh_reference(mesh)
             minimum_distance2 = min(minimum_distance2, distance2)
             ra, rb, rc = a - p, b - p, c - p
             la, lb, lc = norm(ra), norm(rb), norm(rc)
-            solid_angle += 2atan(dot(ra, cross(rb, rc)),
-                la * lb * lc + dot(ra, rb) * lc + dot(rb, rc) * la + dot(rc, ra) * lb)
+            solid_angle +=
+                2atan(
+                    dot(ra, cross(rb, rc)),
+                    la * lb * lc + dot(ra, rb) * lc + dot(rb, rc) * la + dot(rc, ra) * lb,
+                )
         end
         distance = sqrt(minimum_distance2)
         return (abs(solid_angle) > 2pi ? 1 : -1) * distance
@@ -47,9 +50,13 @@ end
 
 
 function mesh_volume(mesh)
-    vertices = [SVector{3, Float64}(v) for v in eachcol(mesh.vertices)]
-    return abs(sum(dot(vertices[a], cross(vertices[b], vertices[c]))
-                   for (a, b, c) in eachcol(mesh.connectivity))) / 6
+    vertices = [SVector{3,Float64}(v) for v in eachcol(mesh.vertices)]
+    return abs(
+        sum(
+            dot(vertices[a], cross(vertices[b], vertices[c])) for
+            (a, b, c) in eachcol(mesh.connectivity)
+        ),
+    ) / 6
 end
 
 
@@ -83,8 +90,7 @@ end
 function prism_clearance(point, polygon; height=1.0)
     radial = polygon_clearance(point, polygon)
     axial = min(point[3], height - point[3])
-    return min(radial, axial) >= 0 ? min(radial, axial) :
-        -hypot(min(radial, 0), min(axial, 0))
+    return min(radial, axial) >= 0 ? min(radial, axial) : -hypot(min(radial, 0), min(axial, 0))
 end
 
 
@@ -96,7 +102,7 @@ cylinder_clearance(point; radius=1.0, height=1.0) =
 # Cell width is the largest particle diameter, so only the 27 neighbouring cells are needed.
 function pair_penetrations(positions, radii)
     cell_width = 2maximum(radii)
-    cells = Dict{NTuple{3, Int}, Vector{Int}}()
+    cells = Dict{NTuple{3,Int},Vector{Int}}()
     penetration = zeros(length(radii))
     for i in eachindex(radii)
         key = Tuple(floor.(Int, positions[:, i] / cell_width))

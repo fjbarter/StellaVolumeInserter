@@ -111,8 +111,8 @@
   },
   "current_checkout": {
     "revision": "6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a",
-    "script_sha256": "088c2eede122153e303e6e2fffbda85e0cb8625846c09a16b5ec58b6d2bf1133",
-    "timed_run_association": "not established; script currently uses Metal sampling and CPU Float64 relaxation"
+    "script_sha256": "340ced1a0880887e786d32b2d9c7ad71c7cb9aebb3cd8d979e049c1babd10b98",
+    "timed_run_association": "active prototype script uses Metal for both stages; supplemental reproduction recorded separately below"
   },
   "reported_benchmark": {
     "source": "user-reported timings and configuration confirmation",
@@ -146,5 +146,27 @@
     "gpu_relaxation_precision": "Float32",
     "convergence": "confirmed by experimenter; no rerun requested",
     "mesh_provenance": "original Thingiverse mesh, unaltered; confirmed by experimenter"
+  },
+  "latest_reproduction": {
+    "date": "2026-11-08",
+    "source": "original Stanford Dragon prototype, run from a temporary copy with output redirected to a separate directory",
+    "julia_version": "1.12.5",
+    "stella_branch": "anicusan/gpu-updates",
+    "stella_revision": "6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a",
+    "script_sha256": "340ced1a0880887e786d32b2d9c7ad71c7cb9aebb3cd8d979e049c1babd10b98",
+    "metal_device": "AGXG17SDevice",
+    "sampling_backend": "Metal",
+    "relaxation_backend": "Metal",
+    "precision": "Float32 for both stages",
+    "particle_count": 1705517,
+    "seed": 1,
+    "relative_tolerance": 0.01,
+    "purging": false,
+    "printed_insertion_seconds": 83.889,
+    "iterations": 986,
+    "maximum_overlap": 0.0006252527,
+    "user_reported_low_power_mode": true,
+    "replaces_historical_73_second_result": false,
+    "output_directory": "data/raw/generated/11_stanford_dragon/metal_gpu_updates_julia_1_12_5"
   }
 }

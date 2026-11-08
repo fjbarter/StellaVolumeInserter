@@ -7,8 +7,18 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent.parent / "figures"))
-from plotting import (plt, TEAL, RED, apply_style, read_csv, number, validated,
-                      style_axes, boxed_legend, save_figure)
+from plotting import (
+    plt,
+    TEAL,
+    RED,
+    apply_style,
+    read_csv,
+    number,
+    validated,
+    style_axes,
+    boxed_legend,
+    save_figure,
+)
 from matplotlib.lines import Line2D
 from matplotlib.ticker import MaxNLocator
 
@@ -17,9 +27,21 @@ LABELS = {"monodisperse": "Monodisperse", "polydisperse": "Polydisperse"}
 
 
 def read_results(path):
-    rows = read_csv(path, ["psd", "target_packing_fraction", "insertion_seconds", "iterations",
-                           "status", "reported_converged", "termination_reason",
-                           "bulk_packing_fraction", "julia_threads", "blas_threads"])
+    rows = read_csv(
+        path,
+        [
+            "psd",
+            "target_packing_fraction",
+            "insertion_seconds",
+            "iterations",
+            "status",
+            "reported_converged",
+            "termination_reason",
+            "bulk_packing_fraction",
+            "julia_threads",
+            "blas_threads",
+        ],
+    )
     groups = {name: [] for name in COLOURS}
     for row in rows:
         if row["psd"] not in groups:
@@ -33,7 +55,8 @@ def read_results(path):
         if not records or len(set(targets)) != len(targets):
             raise ValueError("Missing distribution or duplicate target fractions: " + name)
     if [r["target_packing_fraction"] for r in groups["monodisperse"]] != [
-            r["target_packing_fraction"] for r in groups["polydisperse"]]:
+        r["target_packing_fraction"] for r in groups["polydisperse"]
+    ]:
         raise ValueError("The two distributions must use the same target fractions")
     return groups
 
@@ -43,17 +66,37 @@ def plot_bulk_density(ax, groups):
         # Report bulk density only when both stopping and independent validation criteria pass.
         successful = [row for row in records if validated(row)]
         values = [number(row, "bulk_packing_fraction") for row in successful]
-        ax.plot([number(row, "target_packing_fraction") for row in successful], values,
-                "o-", color=COLOURS[name], label=LABELS[name])
-    ax.plot([0, 0.75], [0, 0.75], "--", color="0.45", linewidth=1,
-            label=r"$\phi_{\mathrm{bulk}}=\phi_{\mathrm{req}}$", zorder=1)
+        ax.plot(
+            [number(row, "target_packing_fraction") for row in successful],
+            values,
+            "o-",
+            color=COLOURS[name],
+            label=LABELS[name],
+        )
+    ax.plot(
+        [0, 0.75],
+        [0, 0.75],
+        "--",
+        color="0.45",
+        linewidth=1,
+        label=r"$\phi_{\mathrm{bulk}}=\phi_{\mathrm{req}}$",
+        zorder=1,
+    )
     ax.set_ylabel("Measured bulk packing fraction\n(interior region; wall layer excluded)")
-    maxima = {name: max(number(row, "bulk_packing_fraction") for row in records
-                        if validated(row)) for name, records in groups.items()}
-    ax.text(0.04, 0.96,
-            "Highest validated bulk fractions\nMono: {:.3f}; Poly: {:.3f}".format(
-                maxima["monodisperse"], maxima["polydisperse"]),
-            transform=ax.transAxes, va="top", fontsize=8.5)
+    maxima = {
+        name: max(number(row, "bulk_packing_fraction") for row in records if validated(row))
+        for name, records in groups.items()
+    }
+    ax.text(
+        0.04,
+        0.96,
+        "Highest validated bulk fractions\nMono: {:.3f}; Poly: {:.3f}".format(
+            maxima["monodisperse"], maxima["polydisperse"]
+        ),
+        transform=ax.transAxes,
+        va="top",
+        fontsize=8.5,
+    )
     finish(ax, groups)
     ax.set_xlim(0, 0.75)
     ax.set_ylim(0, 0.75)
@@ -64,9 +107,9 @@ def plot_bulk_density(ax, groups):
 def plot_performance(ax, groups):
     # Plot only runs satisfying both convergence and independent geometric checks.
     # All unsuccessful attempts remain available in the raw CSV and logs.
-    returned = {name: [row for row in records
-                       if validated(row)]
-                for name, records in groups.items()}
+    returned = {
+        name: [row for row in records if validated(row)] for name, records in groups.items()
+    }
     if not any(returned.values()):
         raise ValueError("No converged, independently validated assemblies to plot")
     iteration_axis = ax.twinx()
@@ -81,7 +124,11 @@ def plot_performance(ax, groups):
         for row, px, time, count in zip(records, x, times, iterations):
             for target_axis, value in ((ax, time), (iteration_axis, count)):
                 target_axis.plot(
-                    px, value, marker="o", color=COLOURS[name], linestyle="none",
+                    px,
+                    value,
+                    marker="o",
+                    color=COLOURS[name],
+                    linestyle="none",
                     markerfacecolor=COLOURS[name],
                 )
     ax.set_ylabel("Insertion time (s)")
@@ -94,8 +141,7 @@ def plot_performance(ax, groups):
     iteration_axis.tick_params(direction="out")
     iteration_axis.grid(False)
     handles = [
-        Line2D([], [], color=COLOURS[name], marker="o", label=LABELS[name])
-        for name in COLOURS
+        Line2D([], [], color=COLOURS[name], marker="o", label=LABELS[name]) for name in COLOURS
     ] + [
         Line2D([], [], color="0.25", label="Time (left axis)"),
         Line2D([], [], color="0.25", linestyle="--", label="Iterations (right axis)"),
@@ -112,9 +158,17 @@ def finish(ax, groups):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--csv", type=Path, default=HERE.parent.parent / "data/raw/reference/04_density_sweep/density_sweep.csv")
-    parser.add_argument("--output-dir", type=Path, default=HERE.parent.parent / "figures/generated/04_density_sweep")
-    parser.add_argument("--formats", nargs="+", choices=("png", "pdf", "svg"), default=["png", "pdf"])
+    parser.add_argument(
+        "--csv",
+        type=Path,
+        default=HERE.parent.parent / "data/raw/reference/04_density_sweep/density_sweep.csv",
+    )
+    parser.add_argument(
+        "--output-dir", type=Path, default=HERE.parent.parent / "figures/generated/04_density_sweep"
+    )
+    parser.add_argument(
+        "--formats", nargs="+", choices=("png", "pdf", "svg"), default=["png", "pdf"]
+    )
     args = parser.parse_args()
     groups = read_results(args.csv)
     apply_style()

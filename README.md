@@ -1,4 +1,4 @@
-# StellaVolumeInsertion
+# StellaVolumeInserter
 
 Reproducibility repository for **Conservative Mesh-Constrained Volume Insertion for Dense
 Sphere Assemblies in Discrete Element Method Simulations**.
@@ -15,8 +15,9 @@ not bypass access controls and does not bundle either package.
 
 ```sh
 # Use your authorised GitHub access. Stella/ is temporary and ignored by Git.
-git clone https://github.com/stellaorg/stella.jl Stella
-git -C Stella checkout 6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a
+git clone --single-branch --branch anicusan/gpu-updates https://github.com/stellaorg/stella.jl Stella
+# The tested source is branch anicusan/gpu-updates at 6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a.
+# Do not switch this temporary checkout to main. Ensure this branch revision is available upstream before publication.
 julia --project=cases/03_dense_cube -e 'using Pkg; Pkg.instantiate()'
 julia --project=cases/03_dense_cube --threads=1 cases/03_dense_cube/run.jl
 
@@ -40,7 +41,7 @@ migration verification; manifests preserve the resolved dependency environments.
 | 02_annular_cylinder | Inclusion with an internal exclusion |
 | 03_dense_cube | Monodisperse and polydisperse reference assemblies |
 | 04_density_sweep | Whole-domain inventory and interior packing |
-| 05_bidisperse | 100,000 spheres at 20:1 radius ratio; Metal |
+| 05_bidisperse | Archived exploratory case; excluded from the current manuscript |
 | 06_spatial_segregation | 1:5 radius span, controls and cell-size calibration |
 | 07_inclusion_exclusion | Overlapping inclusions and multiple exclusions |
 | 08_mesh_refinement | Five seeds at each cube/cylinder resolution |

@@ -13,8 +13,8 @@ function write_table(path, rows)
     open(path, "w") do io
         println(io, join(columns, ','))
         for row in rows
-            values = ["\"" * replace(string(get(row, key, "")), '"' => "\"\"") * "\""
-                      for key in columns]
+            values =
+                ["\"" * replace(string(get(row, key, "")), '"' => "\"\"") * "\"" for key in columns]
             println(io, join(values, ','))
         end
     end

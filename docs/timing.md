@@ -22,8 +22,17 @@ relative tolerance is 1e-2 and no purging is used. Exact historical source revis
 core affinity were not recorded. The retained manifest is provenance, not proof of each
 runtime version. The old particle export is not associated with the timed run. Historical
 reported packing fraction 0.581 must not be assigned to newly generated assemblies without
-measuring them. New Dragon commands explicitly select both backends and record compilation
-counters; they are not reruns performed during this migration.
+measuring them. The runnable Dragon commands explicitly select both backends and record
+compilation counters. The supplemental prototype reproduction below is a separate run and does not
+replace the historical comparison.
+
+A supplemental reproduction of the original prototype on `anicusan/gpu-updates` commit
+`6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a` completed in 83.889 s (986 iterations; maximum
+overlap 0.0006252527) under Julia 1.12.5 using Metal for both stages. The user also reported
+a successful 85.453 s run with the same iteration count and a maximum overlap of 0.00062669814.
+The user noted Low Power Mode during these runs. These observations are recorded separately
+from the historical 73 s benchmark, which remains the manuscript value. The 83.889 s assembly
+and run metadata are saved in `data/raw/generated/11_stanford_dragon/metal_gpu_updates_julia_1_12_5/`.
 
 Li et al.'s approximately 16-hour runtime is cross-platform context, not an isolated
 algorithmic speedup or equal-error comparison. Their stopping criterion differs. The CPU
