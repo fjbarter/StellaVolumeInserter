@@ -71,9 +71,9 @@ plot uses mean ± sample SD for five seeds, without individual repeat points. Se
 Tracked reference tables live in `data/raw/reference/`, with processed statistics in
 `data/processed/reference/`. New output is kept separately. The original local assemblies
 were extracted losslessly to a compressed, untracked payload in `data/assemblies/reference/`;
-its checksums and original-VTP associations are inventoried under `docs/`. That payload
-needs a separate archive and download URL for independent saved-assembly reproduction.
-Table analysis and plotting remain usable without it. The Dragon asset has download/checksum instructions.
+its checksums and original-VTP associations are inventoried under `docs/`. The original
+assemblies are not distributed; readers can regenerate assemblies using the case scripts.
+Table analysis and plotting remain usable without them. The Dragon asset has download/checksum instructions.
 
 Validation recomputes geometry independently of Stella; a returned block alone does not
 establish convergence. Whole-domain and interior fractions are different measures. The
@@ -83,9 +83,10 @@ dependent; historical Dragon timings compare CPU Float64 with Metal Float32. See
 
 ## Citation, licence and publication
 
-Publication identifiers and an archive DOI are not assigned here. No new licence has been
-selected: framework, contributed scripts, geometries and data require their applicable
-permissions to be confirmed before redistribution. See `docs/release_checklist.md`.
+The repository code is licensed under the GNU Affero General Public License, version 3;
+see `LICENSE`. External packages and the separately downloaded Dragon mesh have their own
+licences. Publication identifiers and an archive DOI are not assigned here. See
+`docs/release_checklist.md`.
 The reproducibility repository is publicly hosted at
 https://github.com/fjbarter/StellaVolumeInserter. See the dependency and release notes
 for the Stella revision and other materials used by the experiments.

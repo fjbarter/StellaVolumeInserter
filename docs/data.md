@@ -27,7 +27,6 @@ The payload inventory is docs/assembly_inventory.csv.
 It records repository-relative paths, byte counts and SHA-256. docs/assembly_provenance.csv
 links each extracted particle payload to its original VTP checksum and particle count.
 Workstation paths were removed from distributable metadata. Original files are untouched.
-Use `python3 scripts/check_payload.py` to check a local payload or a later downloaded archive.
-The payload is available in this local checkout but will not be present in a plain Git clone
-until a release archive is published; add its permanent URL before advertising complete
-saved-assembly reproduction. New runs need no reference payload.
+Use `python3 scripts/check_payload.py` to check a local payload if available. The original
+payload is not distributed with the repository. Readers can regenerate assemblies with the
+case scripts and independently validate the new outputs; new runs need no reference payload.
