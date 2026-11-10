@@ -2,11 +2,9 @@
 
 All insertion cases use the deliberately temporary repository-root `Stella/` checkout.
 Its path is `../../Stella` from a case or attritor project. `/Stella/` is ignored by Git.
-Clone the feature branch using authorised access; do not use `main`. The current tested
-checkout is `anicusan/gpu-updates` at `6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a`. The
-bundled ignored `Stella/` clone is aligned to this revision. Before public release, make
-sure the remote feature branch includes this commit so the documented clone command reaches
-the tested source. Record a different revision explicitly for new studies. Do not copy or
+The tested checkout is `anicusan/gpu-updates` at
+`6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a`. Check out the revision documented in the
+root README, and record a different revision explicitly for new studies. Do not copy or
 commit the framework into this repository.
 
 > TODO after `gpu-updates` merges: update the documented checkout and the commented
@@ -33,7 +31,6 @@ triangle counts rather than assuming mesh identity from element size alone.
 common/validation and common/analysis have separate projects without Stella. The former
 uses standard numeric I/O, CodecZlib and independent geometric routines; the latter also
 uses Packing3D and WriteVTK. Every run/analyse/validate script documents its intended project.
-The legacy source environments retained under docs/historical_environments are provenance,
-not the active projects. Missing legacy manifests were not invented. Newly resolved projects
-are reproducibility environments verified with Julia 1.13.3, not claims about every historical
-runtime version. Never commit LocalPreferences.toml credentials or a local .env file.
+The source environments retained under docs/historical_environments are provenance,
+not the active projects. The active projects are reproducibility environments verified with
+Julia 1.13.3, not claims about every historical runtime version. Never commit LocalPreferences.toml credentials or a local .env file.

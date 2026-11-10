@@ -70,3 +70,15 @@ reference CSV matched the manuscript density-sweep image exactly, and the fresh 
 produced identical successful-repeat counts, packing statistics and iteration statistics.
 The fresh outputs and check reports are in the ignored local directory
 `data/raw/generated/04_density_sweep/verification_20261109/`.
+
+## Publication-readiness audit — 10 November 2026
+
+A clean local clone rebuilt all 25 numerical figure files from tracked reference tables;
+the density-sweep PNG matched the manuscript figure byte for byte. With the local Stella checkout
+linked at the tested revision, both dense-cube insertions converged
+and passed independent saved-data validation and packing reanalysis; the six validator
+tests also passed. The tested Stella checkout was linked locally for these checks. A
+1,000-particle Metal smoke run exercised the Dragon runner, including its recorded
+compilation-counter allowance. The CPU path was checked with an injected error and correctly
+recorded the failure in its log and metadata without loading Metal. The current Dragon
+project uses Julia 1.13.3.

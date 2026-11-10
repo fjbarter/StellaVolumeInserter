@@ -13,9 +13,9 @@ WriteVTK = "64499a7a-5c06-52f2-abe2-ccb03c286192"
 
 [sources]
 Packing3D = {rev = "d437dff33a3019bb28eda2796feae533a02123b7", url = "https://github.com/fjbarter/Packing3D.jl"}
-# BEGIN TEMPORARY STELLA SOURCE — replace this block after public release.
+# BEGIN TEMPORARY STELLA SOURCE — switch to the GitHub source below when ready.
 Stella = {path = "../../Stella"}
-# Future GitHub source (requires authorised access until public):
+# GitHub source (pin to the release revision):
 # Stella = {url = "https://github.com/stellaorg/stella.jl", rev = "6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a"}
 # END TEMPORARY STELLA SOURCE
 

@@ -15,9 +15,9 @@ single-run scaling exports were excluded in favour of the paper's 50 and 65 repe
 Failed density/bidisperse attempts remain recorded. Some failed insertions have no returned
 assembly; a summary is retained rather than fabricating particle data.
 
-New manifests were resolved with Julia 1.13.3. Available legacy manifests are stored under
-historical_environments for provenance, with their temporary Stella path marked; a missing
-historical refinement/wall-probe manifest was not retroactively asserted. Stella's current
+The active manifests were resolved with Julia 1.13.3. Selected historical source
+environments are retained separately for provenance; the active projects and manifests
+should be used to run the cases. Stella's current
 source baseline is commit 6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a. The framework itself is
 not copied. Packing3D's pinned GitHub commit/tree match the saved analysis environment.
 

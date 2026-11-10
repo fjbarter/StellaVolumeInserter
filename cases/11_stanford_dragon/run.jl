@@ -1,13 +1,15 @@
-using Stella, Distributions, Random, LinearAlgebra, TOML, SHA, Metal
+using Stella, Distributions, Random, LinearAlgebra, TOML, SHA
 
 include(joinpath(@__DIR__, "..", "..", "common", "helpers.jl"))
 
 # Select one historical configuration per process. Launch CPU cases with --threads=N.
 backend = isempty(ARGS) ? "cpu" : ARGS[1]
 @assert backend in ("cpu", "metal") "Choose cpu or metal"
-backend == "metal" &&
-    isempty(Metal.devices()) &&
-    error("Metal backend selected, but no Metal device is available")
+if backend == "metal"
+    Sys.isapple() || error("Metal backend requires macOS")
+    @eval using Metal
+    isempty(Metal.devices()) && error("Metal backend selected, but no Metal device is available")
+end
 BLAS.set_num_threads(1)
 parallel = ParallelSettings(num_threads=Threads.nthreads())
 precision =
@@ -34,7 +36,7 @@ dragon = create_triangle_wall(mesh_path, steel)
 write_snapshot(dragon, output, "inclusion")
 
 # Use the same insertion settings for warm-up and the benchmark.
-function insert_geometry(n, wall, mcc, precision, parallel)
+function insert_geometry(n, wall, mcc, precision, parallel, backend)
     block = create_spheres_in_volume(
         n,
         mcc;
@@ -46,7 +48,7 @@ function insert_geometry(n, wall, mcc, precision, parallel)
         force_fill=false,
         verbose=2,
     )
-    precision.relaxation === Metal && Metal.synchronize()
+    backend == "metal" && Metal.synchronize()
     block
 end
 
@@ -57,14 +59,14 @@ Random.seed!(0)
 open(joinpath(output, "warmup.log"), "w") do io
     redirect_stdout(io) do
         redirect_stderr(io) do
-            insert_geometry(1000, warm_wall, mcc, precision, parallel)
+            insert_geometry(1000, warm_wall, mcc, precision, parallel, backend)
         end
     end
 end
 
 # Record the execution environment and the benchmark settings.
 gpu_name = backend == "metal" ? String(first(Metal.devices()).name) : "not used"
-os_version = strip(read(`sw_vers -productVersion`, String))
+os_version = Sys.isapple() ? strip(read(`sw_vers -productVersion`, String)) : "not recorded"
 summary = Dict{String,Any}(
     "configuration" => label,
     "requested_count" => 1_705_517,
@@ -87,18 +89,41 @@ summary = Dict{String,Any}(
     "stella_revision" => readchomp(`git -C $(dirname(dirname(pathof(Stella)))) rev-parse HEAD`),
 )
 
-# Retry if compilation occurs during a measured insertion.
+# Retry if compilation exceeds one microsecond in either reported counter.
+# Retain the measured counters and elapsed time; do not subtract compilation.
+compilation_allowance = 1e-6
+summary["compilation_allowance_seconds"] = compilation_allowance
 block = Ref{Any}(nothing)
 for attempt in 1:3
     Random.seed!(1)
     GC.gc()
     log_path = joinpath(output, "insertion_attempt_$attempt.log")
-    measured = open(log_path, "w") do io
-        redirect_stdout(io) do
-            redirect_stderr(io) do
-                @timed insert_geometry(1_705_517, dragon, mcc, precision, parallel)
+    measured = try
+        open(log_path, "w") do io
+            redirect_stdout(io) do
+                redirect_stderr(io) do
+                    @timed insert_geometry(1_705_517, dragon, mcc, precision, parallel, backend)
+                end
             end
         end
+    catch error
+        error isa InterruptException && rethrow()
+        trace = catch_backtrace()
+        log_text = isfile(log_path) ? read(log_path, String) : ""
+        iterations = collect(eachmatch(r"iter=(\d+)", log_text))
+        summary["attempt"] = attempt
+        summary["reported_converged"] = false
+        summary["termination_reason"] = occursin("stagnated", sprint(showerror, error)) ?
+            "stagnation" : "exception"
+        summary["error"] = sprint(showerror, error)
+        summary["iterations"] = isempty(iterations) ? -1 : parse(Int, last(iterations).captures[1])
+        write_summary(output, summary)
+        open(log_path, "a") do io
+            println(io, "\nInsertion failed:")
+            showerror(io, error, trace)
+            println(io)
+        end
+        rethrow()
     end
     summary["compile_seconds"] = measured.compile_time
     summary["recompile_seconds"] = measured.recompile_time
@@ -117,13 +142,14 @@ for attempt in 1:3
         summary["reported_max_overlap"] = parse(Float64, stop.captures[4])
     end
     write_summary(output, summary)
-    if measured.compile_time == measured.recompile_time == 0
+    if measured.compile_time <= compilation_allowance &&
+       measured.recompile_time <= compilation_allowance
         block[] = measured.value
         break
     end
-    println("Discarding compilation-contaminated full attempt ", attempt)
+    println("Discarding attempt with compilation above one microsecond: ", attempt)
 end
-isnothing(block[]) && error("No compilation-free timing obtained")
+isnothing(block[]) && error("No timing obtained within the compilation allowance")
 
 # Save the converged assembly and its metadata for validation and inspection.
 positions, radii = particle_data(block[])

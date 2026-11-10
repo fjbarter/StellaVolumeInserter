@@ -9,9 +9,9 @@ both stages and Float32.
 
 ## Requirements
 
-Use Julia 1.13.3 with this case project and the authorised `Stella/` source checkout on
-`anicusan/gpu-updates` at the tested revision recorded in `docs/dependencies.md`. The GPU
-mode requires a compatible Apple Metal device. `meshes/dragon2.stl` is intentionally
+Use Julia 1.13.3 with this case project and the `Stella/` source checkout at the tested
+revision recorded in `docs/dependencies.md`. The GPU mode requires a compatible Apple Metal
+device. `meshes/dragon2.stl` is intentionally
 ignored by Git; download the original file and verify it with
 `python3 scripts/check_dragon_mesh.py`.
 
@@ -42,7 +42,10 @@ The runner checks for a Metal device when this backend is selected, warms the in
 path, synchronises device work before timing, and saves the mesh, particles, numeric data,
 logs and run metadata. Set `STELLA_OUTPUT` to choose an output directory; the default is
 `data/raw/generated/11_stanford_dragon/{cpu_N,metal}`. Do not run timing cases concurrently.
-CPU mode does not require an available Metal device.
+CPU mode does not require an available Metal device. If an insertion fails, the attempt
+log and `summary.toml` record its failure. The runner records Julia's compilation counters
+and accepts at most one microsecond each of compilation and recompilation in a timed call;
+it does not subtract these amounts from the measured time.
 
 ## Results and scope
 
@@ -50,18 +53,8 @@ The paper retains the experimenter-reported historical times: 2,941/1,634/915/52
 1/2/4/8 CPU threads and 73 s on Metal. The historical packing fraction is 0.581. Those
 values remain the manuscript benchmark.
 
-A separate run of the original prototype under Julia 1.12.5 and Stella revision
-`6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a` completed in 83.889 s (986 iterations; maximum
-overlap 0.0006252527). A second successful prototype run reported by the user took 85.453 s
-(986 iterations; maximum overlap 0.00062669814). The user noted that the machine was in Low
-Power Mode. These are supplemental reproduction observations and do not replace the
-historical 73-second result. The run output and metadata for the 83.889-second observation
-are in the ignored directory
-`data/raw/generated/11_stanford_dragon/metal_gpu_updates_julia_1_12_5/`.
-
-Earlier attempts using the older bundled revision `f170527` with the migration environment
-stopped at the stagnation guard; their logs remain under the separate generated `metal/`
-and `metal_retry1/` directories. They are not the result reported above. CPU benchmark
+The active Dragon project uses Julia 1.13.3. Its manifest records the environment for
+new runs; it does not establish the version used for every historical timing. CPU benchmark
 timings have not been rerun.
 
 ## Independent validation and analysis

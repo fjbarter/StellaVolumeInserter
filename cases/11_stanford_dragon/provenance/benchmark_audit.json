@@ -78,41 +78,10 @@
     "os": "macOS 26.6.2 (25G83)",
     "kernel": "Darwin 25.6.0"
   },
-  "saved_manifest": {
-    "julia_version": "1.12.5",
-    "sha256": "a48f349315815048cc18bb9a40daf35af9f1d5b264a064d54d3cbb227d756bc7",
-    "packages": {
-      "Stella": {
-        "path": "../../..",
-        "version": "0.1.0"
-      },
-      "Metal": {
-        "git-tree-sha1": "f6230e33182533b6411c1d82ff894e9b36eaf320",
-        "version": "1.11.1"
-      },
-      "AcceleratedKernels": {
-        "git-tree-sha1": "f75592c5dc92f7f75e544b156eba7165d4418193",
-        "version": "0.4.4"
-      },
-      "ImplicitBVH": {
-        "git-tree-sha1": "ec7c283ee0a970cb16d07661558a12555b9e7983",
-        "version": "0.7.1"
-      },
-      "KernelAbstractions": {
-        "git-tree-sha1": "e51d16f9dcff134c4ecf79e7cfa764c59d2d648e",
-        "version": "0.9.45"
-      },
-      "Distributions": {
-        "git-tree-sha1": "478d3450b1cc56521d1d99ad923acf43f8813c6d",
-        "version": "0.25.134"
-      }
-    },
-    "timed_run_association": "not established"
-  },
   "current_checkout": {
     "revision": "6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a",
     "script_sha256": "340ced1a0880887e786d32b2d9c7ad71c7cb9aebb3cd8d979e049c1babd10b98",
-    "timed_run_association": "active prototype script uses Metal for both stages; supplemental reproduction recorded separately below"
+    "timed_run_association": "The checkout and script snapshot do not establish the exact revision used for the historical timed runs."
   },
   "reported_benchmark": {
     "source": "user-reported timings and configuration confirmation",
@@ -146,27 +115,5 @@
     "gpu_relaxation_precision": "Float32",
     "convergence": "confirmed by experimenter; no rerun requested",
     "mesh_provenance": "original Thingiverse mesh, unaltered; confirmed by experimenter"
-  },
-  "latest_reproduction": {
-    "date": "2026-11-08",
-    "source": "original Stanford Dragon prototype, run from a temporary copy with output redirected to a separate directory",
-    "julia_version": "1.12.5",
-    "stella_branch": "anicusan/gpu-updates",
-    "stella_revision": "6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a",
-    "script_sha256": "340ced1a0880887e786d32b2d9c7ad71c7cb9aebb3cd8d979e049c1babd10b98",
-    "metal_device": "AGXG17SDevice",
-    "sampling_backend": "Metal",
-    "relaxation_backend": "Metal",
-    "precision": "Float32 for both stages",
-    "particle_count": 1705517,
-    "seed": 1,
-    "relative_tolerance": 0.01,
-    "purging": false,
-    "printed_insertion_seconds": 83.889,
-    "iterations": 986,
-    "maximum_overlap": 0.0006252527,
-    "user_reported_low_power_mode": true,
-    "replaces_historical_73_second_result": false,
-    "output_directory": "data/raw/generated/11_stanford_dragon/metal_gpu_updates_julia_1_12_5"
   }
 }

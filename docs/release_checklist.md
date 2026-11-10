@@ -1,13 +1,13 @@
-# Before public release
+# Release checklist
 
-- Confirm contributor/institutional redistribution rights and choose an appropriate script/data licence.
-- Confirm external mesh licensing; currently the Dragon STL is download-only and ignored.
-- Ensure Stella/ is ignored and no framework files, credentials or workstation paths are staged.
-- Switch the marked temporary source blocks to the authorised/public pinned GitHub source,
-  resolve each environment, and commit its updated Manifest.toml.
-- Archive the deliberately untracked reference assembly payload; publish its checksum and URL/DOI.
-- Recheck the tracked inventory against that payload, and test documented commands from a fresh clone.
-- Add final manuscript citation, code/archive DOI, funding and author information as appropriate.
-- Review Git status and the verification record before creating a public GitHub repository.
+The reproducibility repository is public. The following work remains for a complete,
+independently reproducible release:
 
-No licence, DOI, public remote or public availability is invented by this migration.
+- Check the Stella source pin and manifests against the version selected for the release.
+- Confirm contributor and institutional redistribution rights and select a licence for the
+  repository's scripts and data. No licence has yet been assigned.
+- Confirm the Dragon mesh licence before redistributing it; it is currently download-only.
+- Archive the untracked reference assemblies and publish their checksums and a download URL.
+- After archiving the reference payload, test insertion and independent validation from a
+  fresh clone of the released source and update the recorded verification.
+- Add final manuscript citation, release/archive DOI and funding information as appropriate.

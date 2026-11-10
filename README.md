@@ -1,7 +1,7 @@
 # StellaVolumeInserter
 
-Reproducibility repository for **Conservative Mesh-Constrained Volume Insertion for Dense
-Sphere Assemblies in Discrete Element Method Simulations**.
+Reproducibility repository for **Fast, GPU-Accelerated Dense Sphere Packing in Complex
+Geometries**.
 
 The eleven cases cover classification, finite-sphere geometry, packing, size distribution,
 segregation, mesh sensitivity, wall corrections and CPU/GPU performance. This repository
@@ -9,15 +9,15 @@ contains experiment code and independent checks, not the Stella framework or man
 
 ## Install and run the dense-cube example
 
-Stella is an external dependency. Until its public release, insertion requires authorised
-GitHub access. Packing3D is also fetched from GitHub at a fixed commit. This repository does
-not bypass access controls and does not bundle either package.
+Stella is an external dependency. The examples use a local Stella checkout at the tested
+revision below; Packing3D is fetched from GitHub at a fixed commit. This repository does
+not bundle either package.
 
 ```sh
-# Use your authorised GitHub access. Stella/ is temporary and ignored by Git.
+# Stella/ is a temporary dependency checkout and is ignored by Git.
 git clone --single-branch --branch anicusan/gpu-updates https://github.com/stellaorg/stella.jl Stella
-# The tested source is branch anicusan/gpu-updates at 6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a.
-# Do not switch this temporary checkout to main. Ensure this branch revision is available upstream before publication.
+# Check out the tested revision.
+git -C Stella checkout --detach 6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a
 julia --project=cases/03_dense_cube -e 'using Pkg; Pkg.instantiate()'
 julia --project=cases/03_dense_cube --threads=1 cases/03_dense_cube/run.jl
 
@@ -72,8 +72,8 @@ Tracked reference tables live in `data/raw/reference/`, with processed statistic
 `data/processed/reference/`. New output is kept separately. The original local assemblies
 were extracted losslessly to a compressed, untracked payload in `data/assemblies/reference/`;
 its checksums and original-VTP associations are inventoried under `docs/`. That payload
-needs deliberate archival and a download URL before a public release. Table analysis and
-plotting remain usable without it. The Dragon asset has download/checksum instructions.
+needs a separate archive and download URL for independent saved-assembly reproduction.
+Table analysis and plotting remain usable without it. The Dragon asset has download/checksum instructions.
 
 Validation recomputes geometry independently of Stella; a returned block alone does not
 establish convergence. Whole-domain and interior fractions are different measures. The
@@ -86,4 +86,6 @@ dependent; historical Dragon timings compare CPU Float64 with Metal Float32. See
 Publication identifiers and an archive DOI are not assigned here. No new licence has been
 selected: framework, contributed scripts, geometries and data require their applicable
 permissions to be confirmed before redistribution. See `docs/release_checklist.md`.
-This local repository has not been published or pushed by the migration.
+The reproducibility repository is publicly hosted at
+https://github.com/fjbarter/StellaVolumeInserter. See the dependency and release notes
+for the Stella revision and other materials used by the experiments.
