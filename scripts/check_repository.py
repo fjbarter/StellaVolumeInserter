@@ -87,6 +87,18 @@ assert (
     )
     == 34
 )
+# The five-repeat sweep is preserved separately from the original single-seed table.
+repeats = list(csv.DictReader(
+    (ROOT / "data/raw/reference/04_density_sweep/density_sweep_repeats.csv").open()
+))
+assert len(repeats) == 175
+conditions = {(r["psd"], float(r["target_packing_fraction"])) for r in repeats}
+assert sum(name == "monodisperse" for name, _ in conditions) == 17
+assert sum(name == "polydisperse" for name, _ in conditions) == 18
+for name, target in conditions:
+    group = [r for r in repeats if r["psd"] == name and float(r["target_packing_fraction"]) == target]
+    assert sorted(int(r["seed"]) for r in group) == [1, 2, 3, 4, 5]
+
 print(
     "Verified 11 complete cases, isolated validation/analysis projects, portable source blocks and reference table counts"
 )

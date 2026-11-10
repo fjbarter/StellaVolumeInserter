@@ -7,10 +7,10 @@ include(joinpath(@__DIR__, "..", "..", "common", "helpers.jl"))
 @assert Threads.nthreads() == 1 "Run this case with julia --threads=1"
 BLAS.set_num_threads(1)
 
-# One fixed seed per condition. Failed/stagnated conditions remain in the summary.
+# Repeat each condition with independent seeds; retain failed attempts in the summary.
 mcc = @material MCC E=5e6 ν=0.4 ρ=1580.0
 steel = @material Steel E=5e6 ν=0.4 ρ=7850.0
-seed = 1
+seeds = 1:5
 parallel = ParallelSettings(num_threads=1)
 relative_tolerance = 1e-3
 # Include the existing dense-box test exactly: N=1000, r=0.005, side=0.1.
@@ -55,8 +55,9 @@ write_snapshot(create_triangle_wall(bulk_region, steel), output, "bulk_measureme
 
 # Number fractions are explicit, so requested and realised PSDs can be compared.
 distributions = [
-    (name="monodisperse", radii=[0.005], fractions=[1.0]),
-    (name="polydisperse", radii=[0.003, 0.004, 0.005], fractions=[0.4, 0.4, 0.2]),
+    (name="monodisperse", radii=[0.005], fractions=[1.0], targets=packing_fractions),
+    (name="polydisperse", radii=[0.003, 0.004, 0.005], fractions=[0.4, 0.4, 0.2],
+     targets=sort([packing_fractions; 0.525])),
 ]
 
 # Warm both subtype layouts before timing; one and three radius classes specialise differently.
@@ -79,11 +80,11 @@ for distribution in distributions
 end
 rows = Dict{String,Any}[]
 
-for distribution in distributions, target_fraction in packing_fractions
+for distribution in distributions, target_fraction in distribution.targets, seed in seeds
     mean_particle_volume = sum(distribution.fractions .* (4pi / 3 .* distribution.radii .^ 3))
     num_particles = round(Int, target_fraction * side^3 / mean_particle_volume)
     radii = FractionalDistribution(distribution.fractions, distribution.radii)
-    directory = joinpath(output, "$(distribution.name)_phi_$target_fraction")
+    directory = joinpath(output, "$(distribution.name)_phi_$target_fraction", "seed_$seed")
     write_snapshot(create_triangle_wall(box, steel), directory, "inclusion")
     write_snapshot(create_triangle_wall(bulk_region, steel), directory, "bulk_measurement_region")
 

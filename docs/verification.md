@@ -43,3 +43,30 @@ Historical Dragon convergence and timings retain experimenter provenance, not ne
 logs. CUDA, AMDGPU, oneAPI, other OSes and an unauthenticated public clone were not tested.
 No public repository or dataset archive was created. Data/geometry licensing and publication
 metadata remain release tasks, not claims of readiness for unrestricted redistribution.
+
+## Density sweep update — 9 November 2026
+
+The prototype density sweep was rerun for five seeds per condition. The 170 original
+attempts and five additional polydisperse 0.525 attempts are recorded in the repeated
+reference table; 98 both reported convergence and passed the independent geometric
+checks performed during those runs. The 0.525 condition was measured separately.
+Repeated-run particle assemblies were not separately revalidated from an archived
+numeric payload. The original single-seed verification above remains a dated audit.
+
+## Repository density sweep verification — 9 November 2026
+
+The repository case was run with Julia 1.13.3, one CPU thread and Stella revision
+`6dbfdb956891e94fa491f2ae0a7d0af10ec7d86a`. All 175 attempts completed. Their
+statuses, convergence reports, particle counts, iteration counts and packing fractions
+matched the recorded repeated-sweep table for each PSD, target and seed. Timings are
+independent measurements and are not expected to match exactly.
+
+The independent saved-data validator checked all 125 returned assemblies: 98 passed
+both geometry and the reported convergence criterion; seven passed geometry without
+reported convergence; and 20 failed geometry. The other 50 attempts returned no
+assembly. Packing3D reanalysis of all 125 returned assemblies reproduced the recorded
+interior fractions within the analysis tolerance. The plot regenerated from the
+reference CSV matched the manuscript density-sweep image exactly, and the fresh run
+produced identical successful-repeat counts, packing statistics and iteration statistics.
+The fresh outputs and check reports are in the ignored local directory
+`data/raw/generated/04_density_sweep/verification_20261109/`.
